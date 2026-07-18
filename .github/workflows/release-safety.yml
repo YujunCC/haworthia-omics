@@ -1,0 +1,22 @@
+name: Release safety
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  source-safety:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check tracked files
+        run: python scripts/audit_release.py
+      - name: Compile source
+        run: >-
+          python -m py_compile app.py main.py database.py dataset.py engine.py
+          model_package.py models.py segmentation.py run_haworthia.py
+          scripts/check_setup.py scripts/download_segmentation_models.py
+          scripts/audit_release.py scripts/build_release_bundle.py

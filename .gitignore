@@ -1,0 +1,41 @@
+# User data and local backups
+local_images/
+backups/
+haworthia_omics.db
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+
+# Trained and third-party model assets
+*.pth
+*.pt
+*.ckpt
+*.onnx
+MODEL_CARD.md
+MODEL_MANIFEST.json
+
+# Local configuration and generated files
+.env
+*.log
+apppp.py
+dist/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments and editors
+.venv/
+venv/
+env/
+.idea/
+.vscode/
+.agents/
+
+# Operating-system files
+.DS_Store
+Thumbs.db
