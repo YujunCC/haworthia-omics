@@ -10,18 +10,18 @@ database, image, checkpoint, backup, or third-party ONNX weight.
 
 ```powershell
 git init -b main
-git config user.name "Yujun8Q"
-git config user.email "142278530+Yujun8Q@users.noreply.github.com"
+git config user.name "YujunCC"
+git config user.email "142278530+YujunCC@users.noreply.github.com"
 git add .
 git status --short
 python scripts/audit_release.py
 git commit -m "Initial open-source release"
 ```
 
-Create an empty public repository named `haworthia-omics` under `Yujun8Q`, then push:
+Create an empty public repository named `haworthia-omics` under `YujunCC`, then push:
 
 ```powershell
-git remote add origin https://github.com/Yujun8Q/haworthia-omics.git
+git remote add origin https://github.com/YujunCC/haworthia-omics.git
 git push -u origin main
 ```
 
