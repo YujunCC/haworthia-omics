@@ -50,6 +50,7 @@ st.markdown(
     .main-notice {border-left: 3px solid #56705e; padding: .2rem 0 .2rem .9rem;
                   color: #46514a; margin-bottom: 1.1rem;}
     [data-testid="stFileUploader"] {min-height: 118px;}
+    [data-testid="stExpander"] summary {font-weight: 600;}
     .small-note {color: #626b65; font-size: .9rem;}
 </style>
 """,
@@ -104,6 +105,52 @@ def show_processing_error(exc):
         return
     LOGGER.exception("Hosted image processing failed", exc_info=exc)
     st.error("图片处理失败，请稍后重试；若问题持续出现，请通过项目 Issues 告知维护者。")
+
+
+def render_usage_notice():
+    st.warning(
+        "内部图库配对五折评估：类群/变种 Top-1 为 80.42%，物种 Top-1 为 99.85%。"
+        "这不是独立外部测试，开放集未知类群检出与误拒也尚未校准。模型很可能出错，"
+        "鉴定、注意力和表型关系结果只能用于探索与交叉核对。"
+    )
+    with st.expander("评测口径、常见失败情形与使用边界（使用前请阅读）"):
+        st.markdown(
+            """
+#### 内部评测口径
+
+当前托管模型采用 300 轮训练、分类先验 `α=0.05`、分割质量感知降权和每类群 3 个子原型；
+训练图库包含 126 个类群记录、3371 张人工筛选图片。
+
+| 指标 | 内部评估结果 |
+|---|---:|
+| 类群/变种级 Top-1 | `80.42%` |
+| 物种级 Top-1 | `99.85%` |
+| 新旧模型共同覆盖的 116 个类群，按当前 3 子原型规则计算的类群级 Top-1 | `87.29%` |
+
+这些结果来自训练图库内的配对五折中心评估。虽然被测图片会从对应折的中心计算中排除，
+模型权重仍见过图库图片，因此不能排除训练集记忆、图片来源风格和类群不平衡的影响。
+项目目前没有足够的独立外部测试集，也没有经校准的开放集未知类群检出率、误拒率或置信区间。
+
+#### 容易出错的情况
+
+- 背景分割失败，或图片较暗、模糊、植株不完整；
+- 幼苗、胁迫状态或栽培状态变化明显；
+- 冷门类群样本不足，或类群之间表型高度相近；
+- 输入类群不在当前原型库中。开放集拒绝阈值不等于统计学置信度。
+
+#### 使用与数据边界
+
+- Demo 仅用于学术研究、教育和个人学习；请只上传您有权处理的图片。
+- 上传图片不会加入训练集或项目数据库，但托管平台可能在计算期间产生短期临时缓存。
+- 模型权重和数值原型仅在托管运行时加载，不在公开 GitHub 仓库或 Release 中提供下载。
+- 鉴定名称、相似度、注意力热力图、表型网络、近邻表和聚类树，均不得作为植物鉴定、
+  分类学修订、亲缘或杂交判断、保护与交易决策或科研结论的决定性依据。
+
+重要结论应结合模式与原始描述、产地和生态信息、多个器官性状、可靠专家复核，以及适用时的
+分子系统学或群体遗传学证据。完整说明见
+[GitHub README](https://github.com/YujunCC/haworthia-omics#最终模型的内部评测与重要限制)。
+"""
+        )
 
 
 def render_prediction(service):
@@ -256,6 +303,7 @@ except Exception:
 st.caption(
     f"已加载 {len(SERVICE.tax_ids)} 个类群的数值原型。模型权重和原型库不在公开 GitHub 仓库中分发。"
 )
+render_usage_notice()
 
 prediction_tab, attention_tab, relationship_tab, tree_tab = st.tabs(
     ["开放集推理", "注意力热力图", "表型网络与近邻", "树状聚类"]
@@ -275,8 +323,6 @@ st.markdown(
 <div class="small-note">
 本 Demo 仅用于学术研究、教育和个人学习。应用不会将上传图片用于训练，也不会写入项目数据库；
 托管平台可能在处理期间产生短期临时缓存。未经授权的模型提取或再分发不受项目维护者认可。<br><br>
-内部评测来自训练图库内的配对五折评估，不是独立外部测试准确率。图片质量、分割、类群覆盖和
-拍摄条件均可能导致错误；所有结果仅供探索和交叉核对。<br><br>
 <a href="https://github.com/YujunCC/haworthia-omics">GitHub 源代码</a> ·
 <a href="https://github.com/YujunCC/haworthia-omics/issues">问题与权利通知</a>
 </div>
