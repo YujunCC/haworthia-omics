@@ -253,7 +253,15 @@ Copyright 2026 Yujun（GitHub: [YujunCC](https://github.com/YujunCC)）。
 允许使用、修改、商用和再分发，但必须遵守许可证和 NOTICE 要求。它不覆盖用户图片、数据库、
 模型权重、导出模型包或第三方分割权重。
 
-本工具旨在服务植物爱好者与基础科研。若您基于本项目开发了商业产品，或发表了重要成果，欢迎通过 GitHub Issues、作者的 GitHub 主页或邮箱联系。
-得知本项目得到实际应用，我会非常高兴，谢谢喵qwq
+### 权利与内容通知
 
-问题反馈：[GitHub Issues](https://github.com/YujunCC/haworthia-omics/issues)
+如果您认为本项目或在线 Demo 中的内容侵犯了您的著作权、商标权或其他合法权益，
+请通过邮箱联系我联系，并提供相关 URL 或文件、权利依据、联系方式及希望采取的
+处理措施。收到信息完整且可核实的通知后，我会尽快调查，并在必要时移除或限制相关内容。
+
+**本工具旨在服务植物爱好者与基础科研。若您基于本项目开发了商业产品，或发表了重要成果，欢迎通过 GitHub Issues、作者的 GitHub 主页或邮箱联系。**
+
+**得知本项目得到实际应用，我会非常高兴，谢谢喵qwq**
+
+**我的邮箱**：yujuncc@outlook.com
+**问题反馈**：[GitHub Issues](https://github.com/YujunCC/haworthia-omics/issues)
