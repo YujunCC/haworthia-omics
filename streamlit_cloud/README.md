@@ -28,3 +28,8 @@ streamlit_cloud/streamlit_app.py
 The first image request downloads and validates the two public segmentation models.
 The app uses a low-memory mode that keeps at most one ONNX session resident at a time,
 so this first request and later image requests may be slower on the free CPU instance.
+
+Result images are sent as inline PNG previews over the existing Streamlit connection,
+so they do not depend on temporary `/media/` URLs being reachable. Previews have a
+maximum edge of 1600 pixels to bound the transfer size; this display limit does not
+change segmentation, model inputs, similarity scores, or attention computation.

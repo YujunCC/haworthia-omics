@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 import io
 import logging
 import os
@@ -34,6 +35,7 @@ from runtime_assets import prepare_private_assets
 
 
 MAX_UPLOAD_BYTES = 20 * 1024 * 1024
+MAX_PREVIEW_EDGE = 1600
 LOGGER = logging.getLogger("haworthia_streamlit")
 
 
@@ -113,6 +115,17 @@ def read_upload(uploaded_file):
 def require_upload_rights(confirmed):
     if not confirmed:
         raise ValueError("请先确认您有权上传并处理该图片。")
+
+
+def show_result_image(image, *, caption):
+    """Send the preview inline so it needs no separate /media/ request."""
+    preview = image.copy()
+    # Limit the display payload without changing the image used for inference.
+    preview.thumbnail((MAX_PREVIEW_EDGE, MAX_PREVIEW_EDGE), Image.Resampling.LANCZOS)
+    buffer = io.BytesIO()
+    preview.save(buffer, format="PNG")
+    encoded = base64.b64encode(buffer.getvalue()).decode("ascii")
+    st.image(f"data:image/png;base64,{encoded}", caption=caption, width="stretch")
 
 
 def show_processing_error(exc):
@@ -205,7 +218,7 @@ def render_prediction(service):
         segmented, status, table = result
         preview, findings = st.columns([1, 1.35])
         with preview:
-            st.image(segmented, caption="模型实际接收的去背景图像", width="stretch")
+            show_result_image(segmented, caption="模型实际接收的去背景图像")
         with findings:
             st.info(status)
             st.dataframe(table, hide_index=True, width="stretch")
@@ -249,9 +262,9 @@ def render_attention(service):
         st.info(status)
         preview, decoded = st.columns([1, 2.2])
         with preview:
-            st.image(segmented, caption="模型输入", width="stretch")
+            show_result_image(segmented, caption="模型输入")
         with decoded:
-            st.image(heatmap, caption="四注意力头与门控权重", width="stretch")
+            show_result_image(heatmap, caption="四注意力头与门控权重")
 
 
 def render_relationships(service):
